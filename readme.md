@@ -2,7 +2,7 @@
 A library for making your error handling code a little cleaner.
 
 # Motivation
-Returning Optional<String> is a great way to indicate to people that a specific outcome might not happen. 
+Returning Optional<String> is a great way to indicate to other developers that a specific outcome might not happen. 
 It is often the case that the outcome of an action is more complex than either a value with success or a failure without
 a value.
 
