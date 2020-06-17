@@ -120,4 +120,4 @@ ThrowableConverter to capture any relevant information, in cases where Exception
 integrations.
 
 # See also
-Some very basic examples from this document can be found in the core test folder, in the package *dev.errant.bettertype.basic.example.chickens*
+Some very basic examples from this document can be found [here](https://github.com/ununbium/bettertype/tree/master/core/src/test/java/dev/errant/bettertype/basic/example/chickens) (in the core test folder, in the package *dev.errant.bettertype.basic.example.chickens*)
