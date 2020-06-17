@@ -75,20 +75,36 @@ resulting code is very readable;
     }
 ```
 
-## Absorbers
+### Absorbers
 Absorbers are utility methods that soak up exceptions and turn them into more useful types.
 
 In this case we simply want to write to a file, so a SimpleFailable is an appropriate return type;
 ```java
-    public SimpleFailable<String> updateChickenFile(String chickenNotes) {
+    public SimpleFailable<Throwable> updateChickenFile(String chickenNotes) {
         return ActionThrowableAbsorber.absorb(
-            () -> Files.write(Paths.get("chickens.txt"), chickenNotes.getBytes(), StandardOpenOption.APPEND),
-            ThrowableConverters.messagePrintingConverter()
+            () -> Files.write(Paths.get("chickens.txt"), chickenNotes.getBytes(), StandardOpenOption.APPEND)
         );
     }
 ```
 
 In this case we want to read a file, so we need the slightly more complicated Failable;
+```java
+    public Failable<String, Throwable> readChickenFile(String chickenNotes) {
+        return SupplierThrowableAbsorber.absorb(
+                () -> Files.readString(Paths.get("chickens.txt"))
+        );
+    }
+```
+
+Note that the return type is "Throwable" because we've not specified how to convert exceptions to other values. 
+The next section details how to do this. 
+
+### Throwable Converters
+It is normally desirable to convert exceptions to some other more meaningful format, like a String, enumerated "cause" 
+or complex type. Throwable converters are a functional interface that can be either overriden inline or by inheritance.
+There are also some premade basic converters declared statically in ThrowableConverters.
+
+Using ThrowableConverters.messagePrintingConverter() we can capture just the message from the previous example;
 ```java
     public Failable<String, String> readChickenFile(String chickenNotes) {
         return SupplierThrowableAbsorber.absorb(
@@ -97,7 +113,11 @@ In this case we want to read a file, so we need the slightly more complicated Fa
         );
     }
 ```
+Note that the return type is now Failable<String, String> rather than Failable<String, Throwable>
 
+While there are some provided basic implementations, the library user is encouraged to implement their own 
+ThrowableConverter to capture any relevant information, in cases where Exceptions cannot be eliminated, e.g. 3rd party 
+integrations.
 
 # See also
 Some very basic examples from this document can be found in the core test folder, in the package *dev.errant.bettertype.basic.example.chickens*
