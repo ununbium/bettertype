@@ -10,9 +10,10 @@ While Exceptions can be used to communicate failure reasons, they can result in 
 instead relying on strongly semantic return types the interface becomes cleaner, catch blocks can be eliminated favoring
 plain code and the nature of the error and how it is handled becomes more prominent in the planning process. 
 
-## Types
+# Types
+A run through the core types with some example code for each concept.
 
-### Failable
+## Failable
 Represents an outcome of an action that can fail. The result can either be successful or failure, each with an 
 associated value. The success and failure values can (and normally will) have different types, but note that they are 
 arbitrary and inferred from the failable parameter.
@@ -43,7 +44,7 @@ Use the type safe responses;
     }
 ```
 
-### SimpleFailable
+## SimpleFailable
 Represents an outcome of an action that can fail. The result can either be successful or failure, but unlike Failable only
  failure has an associated value for a SimpleFailable.
 
@@ -75,7 +76,7 @@ resulting code is very readable;
     }
 ```
 
-### Absorbing errors (Exceptions)
+## Absorbing errors (Exceptions)
 The static method "absorb" on Failable and SimpleFailable execute some code and soak up any exceptions. If an exception 
 is thrown it is absorbed and returned as the failure reason.
 
@@ -102,7 +103,7 @@ reading data from a file;
 Note that the return type is "Throwable" because we've not specified how to convert throwables to other values. 
 The next section details how to do this. 
 
-### Throwable Converters
+## Throwable Converters
 It is normally desirable to convert exceptions to some other more meaningful format, like a String, enumerated "cause" 
 or complex type. Throwable converters are a functional interface that can be either overriden inline or by inheritance.
 There are also some premade basic converters declared statically in ThrowableConverters.
@@ -123,4 +124,4 @@ ThrowableConverter to capture any relevant information, in cases where Exception
 integrations.
 
 # See also
-Some very basic examples from this document can be found in the core test folder, in the package *dev.errant.bettertype.basic.example.chickens*
+Some very basic examples from this document can be found [here](https://github.com/ununbium/bettertype/tree/master/core/src/test/java/dev/errant/bettertype/basic/example/chickens) (in the core test folder, in the package *dev.errant.bettertype.basic.example.chickens*)
