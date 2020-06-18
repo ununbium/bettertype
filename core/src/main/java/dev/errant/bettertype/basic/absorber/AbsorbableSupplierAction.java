@@ -1,4 +1,4 @@
-package dev.errant.bettertype.basic.absorber.supplier;
+package dev.errant.bettertype.basic.absorber;
 
 @FunctionalInterface
 public interface AbsorbableSupplierAction<T> {

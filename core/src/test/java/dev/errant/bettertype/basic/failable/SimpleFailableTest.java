@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class SimpleFailableTest {
 
@@ -64,6 +65,54 @@ class SimpleFailableTest {
         });
 
         //then
+    }
+
+
+    @Test
+    @DisplayName("absorb the exception of a supplier action")
+    public void absorbSupplierException() {
+        //given
+        Exception e = mock(Exception.class);
+
+        //when
+        SimpleFailable<Throwable> absorb = SimpleFailable.absorb(() -> {
+            throw e;
+        });
+
+        //then
+        assertTrue(absorb.isFailure());
+        assertEquals(e, absorb.getFailure());
+    }
+
+    @Test
+    @DisplayName("absorb the success of a supplier action")
+    public void absorbSupplierSuccess() {
+        //given
+        String successValue = "Success!";
+
+        //when
+        SimpleFailable<Throwable> absorb = SimpleFailable.absorb(() -> {});
+
+        //then
+        assertTrue(absorb.isSuccess());
+    }
+
+    @Test
+    @DisplayName("absorb the exception of an supplier action and convert it")
+    public void absorbSupplierConverted() {
+        //given
+        Exception e = mock(Exception.class);
+        String message = "bang";
+        when(e.getMessage()).thenReturn(message);
+
+        //when
+        SimpleFailable<String> absorb = SimpleFailable.absorb(() -> {
+            throw e;
+        }, Throwable::getMessage);
+
+        //then
+        assertTrue(absorb.isFailure());
+        assertEquals(message, absorb.getFailure());
     }
 
 }

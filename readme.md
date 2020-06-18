@@ -75,28 +75,31 @@ resulting code is very readable;
     }
 ```
 
-### Absorbers
-Absorbers are utility methods that soak up exceptions and turn them into more useful types.
+### Absorbing errors (Exceptions)
+The static method "absorb" on Failable and SimpleFailable execute some code and soak up any exceptions. If an exception 
+is thrown it is absorbed and returned as the failure reason.
 
-In this case we simply want to write to a file, so a SimpleFailable is an appropriate return type;
+SimpleFailable.absorb(...) is used to wrap an action with no "success value", but some potential exceptions such as 
+writing to a file;
 ```java
     public SimpleFailable<Throwable> updateChickenFile(String chickenNotes) {
-        return ActionThrowableAbsorber.absorb(
+        return SimpleFailable.absorb(
             () -> Files.write(Paths.get("chickens.txt"), chickenNotes.getBytes(), StandardOpenOption.APPEND)
         );
     }
 ```
 
-In this case we want to read a file, so we need the slightly more complicated Failable;
+Failable.absorb(...) is used to wrap an action with a "success value" and some potential exceptions such as 
+reading data from a file;
 ```java
     public Failable<String, Throwable> readChickenFile(String chickenNotes) {
-        return SupplierThrowableAbsorber.absorb(
+        return Failable.absorb(
                 () -> Files.readString(Paths.get("chickens.txt"))
         );
     }
 ```
 
-Note that the return type is "Throwable" because we've not specified how to convert exceptions to other values. 
+Note that the return type is "Throwable" because we've not specified how to convert throwables to other values. 
 The next section details how to do this. 
 
 ### Throwable Converters
@@ -107,7 +110,7 @@ There are also some premade basic converters declared statically in ThrowableCon
 Using ThrowableConverters.messagePrintingConverter() we can capture just the message from the previous example;
 ```java
     public Failable<String, String> readChickenFile(String chickenNotes) {
-        return SupplierThrowableAbsorber.absorb(
+        return Failable.absorb(
                 () -> Files.readString(Paths.get("chickens.txt")),
                 ThrowableConverters.messagePrintingConverter()
         );

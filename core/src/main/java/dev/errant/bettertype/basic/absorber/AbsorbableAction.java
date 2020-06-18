@@ -1,4 +1,4 @@
-package dev.errant.bettertype.basic.absorber.action;
+package dev.errant.bettertype.basic.absorber;
 
 @FunctionalInterface
 public interface AbsorbableAction {
