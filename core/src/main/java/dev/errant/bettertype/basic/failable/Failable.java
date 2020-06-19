@@ -8,7 +8,7 @@ import java.util.NoSuchElementException;
 /**
  * A Container type used to contain either the successful value, or return a different type indicating an error.
  *
- * Failable has the same basic intent as the built in Optional type, but with a stronger notion of success & failure
+ * Failable has the same basic intent as the built in Optional type, but with a stronger notion of success and failure
  *
  * The failure type F may be an Exception, but in some cases it may make sense for this to be another arbitrary object.
  * For example failing with an enumerated HTTP status, String or complex type.
