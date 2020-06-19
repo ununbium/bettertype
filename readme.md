@@ -11,7 +11,7 @@ instead relying on strongly semantic return types the interface becomes cleaner,
 plain code and the nature of the error and how it is handled becomes more prominent in the planning process. 
 
 # Types
-A run through the core types with some example code for each concept.
+A run through the core concepts with some example code for each.
 
 ## Failable
 Represents an outcome of an action that can fail. The result can either be successful or failure, each with an 
@@ -120,7 +120,7 @@ Using ThrowableConverters.messagePrintingConverter() we can capture just the mes
 Note that the return type is now Failable<String, String> rather than Failable<String, Throwable>
 
 While there are some provided basic implementations, the library user is encouraged to implement their own 
-ThrowableConverter to capture any relevant information, in cases where Exceptions cannot be eliminated, e.g. 3rd party 
+ThrowableConverter to capture any relevant information in cases where Exceptions cannot be eliminated, e.g. 3rd party 
 integrations.
 
 # See also
