@@ -5,7 +5,7 @@
     <groupId>dev.errant</groupId>
     <artifactId>bettertype</artifactId>
     <packaging>pom</packaging>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.3.0</version>
 
     <modules>
         <module>core</module>
@@ -34,7 +34,7 @@
         <connection>scm:git:ssh://git@github.com/ununbium/bettertype.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/ununbium/bettertype.git</developerConnection>
         <url>https://github.com/ununbium/bettertype</url>
-        <tag>HEAD</tag>
+        <tag>bettertype-0.3.0</tag>
     </scm>
 
     <properties>
