@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>dev.errant</groupId>
-    <artifactId>bettertype</artifactId>
+    <artifactId>bettertype-parent</artifactId>
     <packaging>pom</packaging>
     <version>0.3.1-SNAPSHOT</version>
 
@@ -144,6 +144,7 @@
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                     <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                    <stagingProgressTimeoutMinutes>20</stagingProgressTimeoutMinutes>
                 </configuration>
             </plugin>
 
