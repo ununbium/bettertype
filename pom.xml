@@ -31,8 +31,8 @@
     </licenses>
 
     <scm>
-        <connection>scm:git:ssh://git@github.com:ununbium/bettertype.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com:ununbium/bettertype.git</developerConnection>
+        <connection>scm:git:ssh://git@github.com/ununbium/bettertype.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/ununbium/bettertype.git</developerConnection>
         <url>https://github.com/ununbium/bettertype</url>
         <tag>HEAD</tag>
     </scm>
@@ -109,7 +109,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.4</version>
+                <version>3.2.0</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
