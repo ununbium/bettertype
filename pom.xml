@@ -31,7 +31,10 @@
     </licenses>
 
     <scm>
+        <connection>scm:git:ssh://git@github.com:ununbium/bettertype.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com:ununbium/bettertype.git</developerConnection>
         <url>https://github.com/ununbium/bettertype</url>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
