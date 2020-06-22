@@ -75,7 +75,7 @@ class SimpleFailableTest {
         Exception e = mock(Exception.class);
 
         //when
-        SimpleFailable<Throwable> absorb = SimpleFailable.absorb(() -> {
+        SimpleFailable<Exception> absorb = SimpleFailable.absorb(() -> {
             throw e;
         });
 
@@ -91,7 +91,7 @@ class SimpleFailableTest {
         String successValue = "Success!";
 
         //when
-        SimpleFailable<Throwable> absorb = SimpleFailable.absorb(() -> {});
+        SimpleFailable<Exception> absorb = SimpleFailable.absorb(() -> {});
 
         //then
         assertTrue(absorb.isSuccess());
@@ -108,7 +108,7 @@ class SimpleFailableTest {
         //when
         SimpleFailable<String> absorb = SimpleFailable.absorb(() -> {
             throw e;
-        }, Throwable::getMessage);
+        }, Exception::getMessage);
 
         //then
         assertTrue(absorb.isFailure());

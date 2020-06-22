@@ -1,22 +1,22 @@
-package dev.errant.bettertype.basic.converter.throwable.provided;
+package dev.errant.bettertype.basic.converter.exception.provided;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MessagePrintingThrowableConverterTest {
+class MessagePrintingExceptionConverterTest {
 
     @Test
     @DisplayName("printMessage")
     public void printMessage() {
         //given
-        MessagePrintingThrowableConverter converter = new MessagePrintingThrowableConverter();
+        MessagePrintingExceptionConverter converter = new MessagePrintingExceptionConverter();
         String message = "Bang!";
-        Throwable t = new Exception(message);
+        Exception e = new Exception(message);
 
         //when
-        String output = converter.convert(t);
+        String output = converter.convert(e);
 
         //then
         assertEquals(message, output);

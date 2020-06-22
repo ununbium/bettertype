@@ -1,7 +1,7 @@
 package dev.errant.bettertype.basic.failable;
 
 import dev.errant.bettertype.basic.absorber.AbsorbableAction;
-import dev.errant.bettertype.basic.converter.throwable.ThrowableConverter;
+import dev.errant.bettertype.basic.converter.exception.ExceptionConverter;
 
 import java.util.NoSuchElementException;
 
@@ -64,32 +64,32 @@ final public class SimpleFailable<F> {
     }
 
     /**
-     * Runs the action function, returning the result as the "success" value of a failable. If a throwable is thrown,
+     * Runs the action function, returning the result as the "success" value of a failable. If an exception is thrown,
      * the it becomes the failure value.
      *
      * @param action the action to perform
-     * @return
+     * @return A SimpleFailable of either success or failure with the value of the absorbed exception
      */
-    public static SimpleFailable<Throwable> absorb(AbsorbableAction action) {
+    public static SimpleFailable<Exception> absorb(AbsorbableAction action) {
         return absorb(action, (value) -> value );
     }
 
     /**
-     * Runs the action function, returning success if no throwables are thrown. If an throwables is thrown
-     * the throwable is passed to the converter, and the output of the converter becomes the failure value.
+     * Runs the action function, returning success if no exceptions are thrown. If an Exception is thrown
+     * the exception is passed to the converter, and the output of the converter becomes the failure value.
      *
      * @param action the action to perform
-     * @param converter a converter to transform a throwable into a more useful type
+     * @param converter a converter to transform a exception into a more useful type
      * @param <F> the failable type (inferred from converter)
      * @return A Failable containing either the Success or Failure value
      */
-    public static <F> SimpleFailable<F> absorb(AbsorbableAction action, ThrowableConverter<F> converter) {
+    public static <F> SimpleFailable<F> absorb(AbsorbableAction action, ExceptionConverter<F> converter) {
         F failure = null;
 
         try {
             action.act();
-        } catch (Throwable throwable) {
-            failure = converter.convert(throwable);
+        } catch (Exception exception) {
+            failure = converter.convert(exception);
         }
 
         if(failure==null) {

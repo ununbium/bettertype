@@ -93,7 +93,7 @@ is thrown it is absorbed and returned as the failure reason.
 SimpleFailable.absorb(...) is used to wrap an action with no "success value", but some potential exceptions such as 
 writing to a file;
 ```java
-    public SimpleFailable<Throwable> updateChickenFile(String chickenNotes) {
+    public SimpleFailable<Exception> updateChickenFile(String chickenNotes) {
         return SimpleFailable.absorb(
             () -> Files.write(Paths.get("chickens.txt"), chickenNotes.getBytes(), StandardOpenOption.APPEND)
         );
@@ -103,34 +103,34 @@ writing to a file;
 Failable.absorb(...) is used to wrap an action with a "success value" and some potential exceptions such as 
 reading data from a file;
 ```java
-    public Failable<String, Throwable> readChickenFile(String chickenNotes) {
+    public Failable<String, Exception> readChickenFile(String chickenNotes) {
         return Failable.absorb(
                 () -> Files.readString(Paths.get("chickens.txt"))
         );
     }
 ```
 
-Note that the return type is "Throwable" because we've not specified how to convert throwables to other values. 
+Note that the return type is "Exception" because we've not specified how to convert exceptions to other values. 
 The next section details how to do this. 
 
-## Throwable Converters
+## Exception Converters
 It is normally desirable to convert exceptions to some other more meaningful format, like a String, enumerated "cause" 
-or complex type. Throwable converters are a functional interface that can be either overriden inline or by inheritance.
-There are also some premade basic converters declared statically in ThrowableConverters.
+or complex type. Exception converters are a functional interface that can be either overriden inline or by inheritance.
+There are also some premade basic converters declared statically in ExceptionConverters.
 
-Using ThrowableConverters.messagePrintingConverter() we can capture just the message from the previous example;
+Using ExceptionConverters.messagePrintingConverter() we can capture just the message from the previous example;
 ```java
     public Failable<String, String> readChickenFile(String chickenNotes) {
         return Failable.absorb(
                 () -> Files.readString(Paths.get("chickens.txt")),
-                ThrowableConverters.messagePrintingConverter()
+                ExceptionConverters.messagePrintingConverter()
         );
     }
 ```
-Note that the return type is now Failable<String, String> rather than Failable<String, Throwable>
+Note that the return type is now Failable<String, String> rather than Failable<String, Exception>
 
 While there are some provided basic implementations, the library user is encouraged to implement their own 
-ThrowableConverter to capture any relevant information in cases where Exceptions cannot be eliminated, e.g. 3rd party 
+ExceptionConverter to capture any relevant information in cases where Exceptions cannot be eliminated, e.g. 3rd party 
 integrations.
 
 # See also

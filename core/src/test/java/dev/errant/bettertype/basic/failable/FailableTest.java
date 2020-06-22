@@ -107,7 +107,7 @@ class FailableTest {
         Exception e = mock(Exception.class);
 
         //when
-        Failable<Object, Throwable> absorb = Failable.absorb(() -> {
+        Failable<Object, Exception> absorb = Failable.absorb(() -> {
             throw e;
         });
 
@@ -123,7 +123,7 @@ class FailableTest {
         String successValue = "Success!";
 
         //when
-        Failable<String, Throwable> absorb = Failable.absorb(() -> successValue);
+        Failable<String, Exception> absorb = Failable.absorb(() -> successValue);
 
         //then
         assertTrue(absorb.isSuccess());
@@ -131,8 +131,8 @@ class FailableTest {
     }
 
     @Test
-    @DisplayName("absorb the throwable of a supplier action and convert it")
-    public void absorbThrowable() {
+    @DisplayName("absorb the exception of a supplier action and convert it")
+    public void absorbExceptionConverted() {
         //given
         Exception e = mock(Exception.class);
         String message = "bang";
@@ -141,7 +141,7 @@ class FailableTest {
         //when
         Failable<Integer, String> absorb = Failable.absorb(() -> {
             throw e;
-        }, Throwable::getMessage);
+        }, Exception::getMessage);
 
         //then
         assertTrue(absorb.isFailure());
@@ -154,7 +154,7 @@ class FailableTest {
         //given
 
         //when
-        Failable<Integer, Throwable> absorb = Failable.absorb(
+        Failable<Integer, Exception> absorb = Failable.absorb(
                 () -> null,
                 (t) -> t);
 

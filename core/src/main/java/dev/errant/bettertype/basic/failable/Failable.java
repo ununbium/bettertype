@@ -2,7 +2,7 @@ package dev.errant.bettertype.basic.failable;
 
 import dev.errant.bettertype.basic.absorber.AbsorbableSupplierAction;
 import dev.errant.bettertype.basic.absorber.NullValueAbsorbed;
-import dev.errant.bettertype.basic.converter.throwable.ThrowableConverter;
+import dev.errant.bettertype.basic.converter.exception.ExceptionConverter;
 
 import java.util.NoSuchElementException;
 
@@ -93,7 +93,7 @@ final public class Failable<S, F> {
      * @param <S> the success type (inferred from action)
      * @return failable either with the success value or the caught exception
      */
-    public static <S> Failable<S, Throwable> absorb(AbsorbableSupplierAction<S> action) {
+    public static <S> Failable<S, Exception> absorb(AbsorbableSupplierAction<S> action) {
         return absorb(action, (value) -> value );
     }
 
@@ -102,22 +102,22 @@ final public class Failable<S, F> {
      * the exception is passed to the converter, and the output of the converter becomes the failure value.
      *
      * If the AbsorbableSupplierAction returns a null value, this is treated as a "Failure" with a marker exception of
-     * "NullValueAbsorbed" being passed to the ThrowableConverter for appropriate conversion to a Failure value.
+     * "NullValueAbsorbed" being passed to the ExceptionConverter for appropriate conversion to a Failure value.
      *
      * @param action the action to perform
-     * @param converter a converter to transform a throwable into a more useful type
+     * @param converter a converter to transform a Exception into a more useful type
      * @param <S> the success type (inferred from action)
      * @param <F> the failable type (inferred from converter)
      * @return A Failable containing either the Success or Failure value
      */
-    public static <S, F> Failable<S,F> absorb(AbsorbableSupplierAction<S> action, ThrowableConverter< F> converter) {
+    public static <S, F> Failable<S,F> absorb(AbsorbableSupplierAction<S> action, ExceptionConverter< F> converter) {
         S outcome = null;
         F failure = null;
 
         try {
             outcome = action.act();
-        } catch (Throwable throwable) {
-            failure = converter.convert(throwable);
+        } catch (Exception exception) {
+            failure = converter.convert(exception);
         }
 
         if(outcome!=null) {

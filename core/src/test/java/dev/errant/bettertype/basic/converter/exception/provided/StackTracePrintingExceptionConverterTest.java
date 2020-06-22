@@ -1,4 +1,4 @@
-package dev.errant.bettertype.basic.converter.throwable.provided;
+package dev.errant.bettertype.basic.converter.exception.provided;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,25 +8,25 @@ import java.io.PrintWriter;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class StackTracePrintingThrowableConverterTest {
+class StackTracePrintingExceptionConverterTest {
 
     @Test
     @DisplayName("print stack trace to string")
     public void printStackTraceToString() {
         //given
-        StackTracePrintingThrowableConverter converter = new StackTracePrintingThrowableConverter();
+        StackTracePrintingExceptionConverter converter = new StackTracePrintingExceptionConverter();
 
         String message = "bang";
-        Throwable t = mock(Throwable.class);
+        Exception e = mock(Exception.class);
 
         doAnswer( (invocation) -> {
             Object[] args = invocation.getArguments();
             ((PrintWriter) args[0]).print(message);
             return null;
-        }).when(t).printStackTrace(any(PrintWriter.class));
+        }).when(e).printStackTrace(any(PrintWriter.class));
 
         //when
-        String output = converter.convert(t);
+        String output = converter.convert(e);
 
         //then
         assertEquals(message, output);
