@@ -1,4 +1,7 @@
+# maven
 core/target
+target
+
+# intellij
 .idea
-bettertype.iml
-core/core.iml
+**/*.iml
