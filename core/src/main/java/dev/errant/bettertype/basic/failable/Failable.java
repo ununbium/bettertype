@@ -1,7 +1,7 @@
 package dev.errant.bettertype.basic.failable;
 
 import dev.errant.bettertype.basic.absorber.AbsorbableSupplierAction;
-import dev.errant.bettertype.basic.absorber.NullValueAbsorbedException;
+import dev.errant.bettertype.basic.absorber.NullValueAbsorbed;
 import dev.errant.bettertype.basic.converter.throwable.ThrowableConverter;
 
 import java.util.NoSuchElementException;
@@ -86,6 +86,9 @@ final public class Failable<S, F> {
      * runs the action function, returning the result as the "success" value of a failable. If an exception is thrown
      * the exception becomes the failure value.
      *
+     * If the AbsorbableSupplierAction returns a null value, this is treated as a "Failure" with a marker exception of
+     * "NullValueAbsorbed" being given as the failure value.
+     *
      * @param action the action to perform
      * @param <S> the success type (inferred from action)
      * @return failable either with the success value or the caught exception
@@ -97,6 +100,9 @@ final public class Failable<S, F> {
     /**
      * Runs the action function, returning the result as the "success" value of a failable. If an exception is thrown
      * the exception is passed to the converter, and the output of the converter becomes the failure value.
+     *
+     * If the AbsorbableSupplierAction returns a null value, this is treated as a "Failure" with a marker exception of
+     * "NullValueAbsorbed" being passed to the ThrowableConverter for appropriate conversion to a Failure value.
      *
      * @param action the action to perform
      * @param converter a converter to transform a throwable into a more useful type
@@ -118,7 +124,7 @@ final public class Failable<S, F> {
             return Failable.success(outcome);
         } else {
             if(failure==null) {
-                failure = converter.convert(new NullValueAbsorbedException());
+                failure = converter.convert(new NullValueAbsorbed());
             }
             return Failable.failure(failure);
         }

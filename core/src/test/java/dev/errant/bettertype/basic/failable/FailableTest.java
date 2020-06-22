@@ -1,6 +1,6 @@
 package dev.errant.bettertype.basic.failable;
 
-import dev.errant.bettertype.basic.absorber.NullValueAbsorbedException;
+import dev.errant.bettertype.basic.absorber.NullValueAbsorbed;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -131,8 +131,8 @@ class FailableTest {
     }
 
     @Test
-    @DisplayName("absorb the exception of a supplier action and convert it")
-    public void absorbError() {
+    @DisplayName("absorb the throwable of a supplier action and convert it")
+    public void absorbThrowable() {
         //given
         Exception e = mock(Exception.class);
         String message = "bang";
@@ -152,18 +152,15 @@ class FailableTest {
     @DisplayName("absorb the exception of supplier action and convert it")
     public void absorbNull() {
         //given
-        Exception e = mock(Exception.class);
-        String message = "bang";
-        when(e.getMessage()).thenReturn(message);
 
         //when
         Failable<Integer, Throwable> absorb = Failable.absorb(
                 () -> null,
-                (t)->t);
+                (t) -> t);
 
         //then
         assertTrue(absorb.isFailure());
-        assertEquals(NullValueAbsorbedException.class, absorb.getFailure().getClass());
+        assertEquals(NullValueAbsorbed.class, absorb.getFailure().getClass());
     }
 
 }
