@@ -10,6 +10,16 @@ While Exceptions can be used to communicate failure reasons, they can result in 
 instead relying on strongly semantic return types the interface becomes cleaner, catch blocks can be eliminated favoring
 plain code and the nature of the error and how it is handled becomes more prominent in the planning process. 
 
+# Dependency
+Just include the core as follows;
+```xml
+<dependency>
+    <artifactId>bettertype-core</artifactId>
+    <groupId>dev.errant</groupId>
+    <version>0.4.1</version>
+</dependency>
+```
+
 # Types
 A run through the core concepts with some example code for each.
 
