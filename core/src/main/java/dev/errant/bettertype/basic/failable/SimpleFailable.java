@@ -89,7 +89,7 @@ final public class SimpleFailable<F> {
         try {
             action.act();
         } catch (Throwable throwable) {
-            failure = converter.convert(throwable);;
+            failure = converter.convert(throwable);
         }
 
         if(failure==null) {

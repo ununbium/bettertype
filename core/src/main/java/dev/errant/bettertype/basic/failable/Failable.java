@@ -110,7 +110,7 @@ final public class Failable<S, F> {
         try {
             outcome = action.act();
         } catch (Throwable throwable) {
-            failure = converter.convert(throwable);;
+            failure = converter.convert(throwable);
         }
 
         if(outcome!=null) {
