@@ -1,6 +1,7 @@
 package dev.errant.bettertype.basic.failable;
 
 import dev.errant.bettertype.basic.absorber.AbsorbableSupplierAction;
+import dev.errant.bettertype.basic.absorber.NullValueAbsorbedException;
 import dev.errant.bettertype.basic.converter.throwable.ThrowableConverter;
 
 import java.util.NoSuchElementException;
@@ -116,6 +117,9 @@ final public class Failable<S, F> {
         if(outcome!=null) {
             return Failable.success(outcome);
         } else {
+            if(failure==null) {
+                failure = converter.convert(new NullValueAbsorbedException());
+            }
             return Failable.failure(failure);
         }
     }
