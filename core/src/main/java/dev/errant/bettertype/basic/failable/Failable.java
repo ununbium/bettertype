@@ -5,6 +5,8 @@ import dev.errant.bettertype.basic.absorber.NullValueAbsorbed;
 import dev.errant.bettertype.basic.converter.exception.ExceptionConverter;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * A Container type used to contain either the successful value, or return a different type indicating an error.
@@ -60,6 +62,30 @@ final public class Failable<S, F> {
         }
 
         return this.failValue;
+    }
+
+    /**
+     * Convert this Failable to an Optional of the Success type.
+     *
+     * @return an optional representing the success case (optionally present if success)
+     */
+    public Optional<S> toOptional() {
+        return Optional.ofNullable(successValue);
+    }
+
+    /**
+     * Convert this Failable to an Optional of the Success type. If this Failable is a failure, the failureHandler is
+     * first called to handle the failure.
+     *
+     * @param failureHandler handles the failure value
+     * @return an optional representing the success case (optionally present if success)
+     */
+    public Optional<S> toOptional(Consumer<F> failureHandler) {
+        if(isFailure()) {
+            failureHandler.accept(failValue);
+        }
+
+        return Optional.ofNullable(successValue);
     }
 
     /**

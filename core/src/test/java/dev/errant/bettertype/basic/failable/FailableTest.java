@@ -6,10 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class FailableTest {
 
@@ -163,4 +164,69 @@ class FailableTest {
         assertEquals(NullValueAbsorbed.class, absorb.getFailure().getClass());
     }
 
+    @Test
+    @DisplayName("convert a failable to a 'present' Optional")
+    public void toOptional_success() {
+        //given
+        String someValue = "some value";
+        Failable<String, Object> success = Failable.success(someValue);
+
+        //when
+        Optional<String> optionalResult = success.toOptional();
+
+        //then
+        assertTrue(optionalResult.isPresent());
+        assertEquals(optionalResult.get(), someValue);
+    }
+
+    @Test
+    @DisplayName("convert a failable to a 'empty' Optional")
+    public void toOptional_failure() {
+        //given
+        String someFailure = "some failure";
+        Failable<String, Object> failure = Failable.failure(someFailure);
+
+        //when
+        Optional<String> optionalResult = failure.toOptional();
+
+        //then
+        assertTrue(optionalResult.isEmpty());
+    }
+
+    @Test
+    @DisplayName("convert a failable to a 'present' Optional with an (uncalled) failure handler")
+    public void toOptional_successWithHandler() {
+        //given
+        String someValue = "some value";
+        Failable<String, Integer> success = Failable.success(someValue);
+
+        Consumer<Integer> mockFailureHandler = mock(Consumer.class);
+
+        //when
+        Optional<String> optionalResult = success.toOptional(mockFailureHandler);
+
+        //then
+        assertTrue(optionalResult.isPresent());
+        assertEquals(optionalResult.get(), someValue);
+
+        verifyZeroInteractions(mockFailureHandler);
+    }
+
+    @Test
+    @DisplayName("convert a failable to a 'present' Optional with a (called) failure handler")
+    public void toOptional_failureWithHandler() {
+        //given
+        Integer someFailure = 7345;
+        Failable<String, Integer> failure = Failable.failure(someFailure);
+
+        Consumer<Integer> mockFailureHandler = mock(Consumer.class);
+
+        //when
+        Optional<String> optionalResult = failure.toOptional(mockFailureHandler);
+
+        //then
+        assertTrue(optionalResult.isEmpty());
+
+        verify(mockFailureHandler).accept(someFailure);
+    }
 }
