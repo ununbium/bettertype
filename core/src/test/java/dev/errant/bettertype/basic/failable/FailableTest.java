@@ -229,4 +229,144 @@ class FailableTest {
 
         verify(mockFailureHandler).accept(someFailure);
     }
+
+    @Test
+    @DisplayName("map failure to a new type - failure value is mapped to same type")
+    public void mapToNewFailure() {
+        //given
+        Failable<Integer, String> source = Failable.failure("some message");
+
+        //when
+        Failable<Integer, String> mapped = source.mapFailure(a -> a + " additional text");
+
+
+        //then
+        assertTrue(mapped.isFailure());
+        assertEquals("some message additional text", mapped.getFailure());
+    }
+
+
+    @Test
+    @DisplayName("map failure to a new type - failure value is mapped to different type")
+    public void mapToNewFailureWithDifferentType() {
+        //given
+        Failable<Integer, String> source = Failable.failure("some message");
+
+        //when
+        Failable<Integer, Integer> mapped = source.mapFailure(a -> a.length());
+
+        //then
+        assertTrue(mapped.isFailure());
+        assertEquals(12, mapped.getFailure());
+    }
+
+    @Test
+    @DisplayName("map failure to a new type - success")
+    public void mapToNewFailureWithDifferentTypeSuccess() {
+        //given
+        Failable<Integer, String> source = Failable.success(3312121);
+
+        //when
+        Failable<Integer, Integer> mapped = source.mapFailure(a -> a.length());
+
+        //then
+        assertTrue(mapped.isSuccess());
+        assertEquals(3312121, mapped.getSuccess());
+    }
+
+    @Test
+    @DisplayName("map failure to a new type - null mapping should throw an exception on failure")
+    public void mapToNewFailureWithDifferentTypeNullMappingFailure() {
+        //given
+        Failable<Integer, String> source = Failable.failure("some message");
+
+        //when
+        //then
+        assertThrows(AssertionError.class, ()->{
+            source.mapFailure(a -> null);
+        });
+    }
+
+    @Test
+    @DisplayName("map failure to a new type - null mapping should not throw an exception on success")
+    public void mapToNewFailureWithDifferentTypeNullOutcome() {
+        //given
+        Failable<Integer, String> source = Failable.success(623452);
+
+        //when
+        Failable<Integer, String> mapped = source.mapFailure(a -> null);
+
+        //then
+        assertTrue(mapped.isSuccess());
+        assertEquals(623452, mapped.getSuccess());
+    }
+
+    @Test
+    @DisplayName("map success to a new type - success value is mapped to same type")
+    public void mapToNewSuccess() {
+        //given
+        Failable<Integer, String> source = Failable.success(523432);
+
+        //when
+        Failable<Integer, String> mapped = source.mapSuccess(a -> a + 7);
+
+        //then
+        assertTrue(mapped.isSuccess());
+        assertEquals(523439, mapped.getSuccess());
+    }
+
+    @Test
+    @DisplayName("map success to a new type - success value is mapped to different type")
+    public void mapToNewSuccessWithDifferentType() {
+        //given
+        Failable<Integer, String> source = Failable.success(523432);
+
+        //when
+        Failable<String, String> mapped = source.mapSuccess(a -> a.toString());
+
+        //then
+        assertTrue(mapped.isSuccess());
+        assertEquals("523432", mapped.getSuccess());
+    }
+
+    @Test
+    @DisplayName("map success to a new type - failure")
+    public void mapToNewSuccessWithDifferentTypeSuccess() {
+        //given
+        Failable<Integer, String> source = Failable.failure("some value here");
+
+        //when
+        Failable<String, String> mapped = source.mapSuccess(a -> a + "");
+
+        //then
+        assertTrue(mapped.isFailure());
+        assertEquals("some value here", mapped.getFailure());
+    }
+
+    @Test
+    @DisplayName("map success to a new type - null mapping should throw an exception on failure")
+    public void mapToNewSuccessWithDifferentTypeNullMappingFailure() {
+        //given
+        Failable<Integer, String> source = Failable.success(6233454);
+
+        //when
+        //then
+        assertThrows(AssertionError.class, ()->{
+            source.mapSuccess(a -> null);
+        });
+    }
+
+    @Test
+    @DisplayName("map success to a new type - null mapping should not throw an exception on success")
+    public void mapToNewSuccessWithDifferentTypeNullOutcome() {
+        //given
+        Failable<Integer, String> source = Failable.success(623452);
+
+        //when
+        Failable<Integer, String> mapped = source.mapFailure(a -> null);
+
+        //then
+        assertTrue(mapped.isSuccess());
+        assertEquals(623452, mapped.getSuccess());
+    }
 }

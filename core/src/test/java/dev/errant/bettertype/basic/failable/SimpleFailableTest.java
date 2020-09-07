@@ -115,4 +115,72 @@ class SimpleFailableTest {
         assertEquals(message, absorb.getFailure());
     }
 
+    @Test
+    @DisplayName("map to a new type - failure value is mapped to same type")
+    public void mapToNewFailure() {
+        //given
+        SimpleFailable<String> source = SimpleFailable.failure("some message");
+
+        //when
+        SimpleFailable<String> mapped = source.mapFailure(a -> a + " additional text");
+
+
+        //then
+        assertTrue(mapped.isFailure());
+        assertEquals("some message additional text", mapped.getFailure());
+    }
+
+
+    @Test
+    @DisplayName("map to a new type - failure value is mapped to different type")
+    public void mapToNewFailureWithDifferentType() {
+        //given
+        SimpleFailable<String> source = SimpleFailable.failure("some message");
+
+        //when
+        SimpleFailable<Integer> mapped = source.mapFailure(a -> a.length());
+
+        //then
+        assertTrue(mapped.isFailure());
+        assertEquals(12, mapped.getFailure());
+    }
+
+    @Test
+    @DisplayName("map to a new type - success")
+    public void mapToNewFailureWithDifferentTypeSuccess() {
+        //given
+        SimpleFailable<String> source = SimpleFailable.success();
+
+        //when
+        SimpleFailable<Integer> mapped = source.mapFailure(a -> a.length());
+
+        //then
+        assertTrue(mapped.isSuccess());
+    }
+
+    @Test
+    @DisplayName("map to a new type - null mapping should throw an exception on failure")
+    public void mapToNewFailureWithDifferentTypeNullMappingFailure() {
+        //given
+        SimpleFailable<String> source = SimpleFailable.failure("some value");
+
+        //when
+        //then
+        assertThrows(AssertionError.class, ()->{
+            source.mapFailure(a -> null);
+        });
+    }
+
+    @Test
+    @DisplayName("map to a new type - null mapping should not throw an exception on success")
+    public void mapToNewFailureWithDifferentTypeNullOutcome() {
+        //given
+        SimpleFailable<String> source = SimpleFailable.success();
+
+        //when
+        SimpleFailable<String> mapped = source.mapFailure(a -> null);
+
+        //then
+        assertTrue(mapped.isSuccess());
+    }
 }

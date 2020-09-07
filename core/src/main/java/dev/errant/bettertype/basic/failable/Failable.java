@@ -7,6 +7,7 @@ import dev.errant.bettertype.basic.converter.exception.ExceptionConverter;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * A Container type used to contain either the successful value, or return a different type indicating an error.
@@ -86,6 +87,46 @@ final public class Failable<S, F> {
         }
 
         return Optional.ofNullable(successValue);
+    }
+
+    /**
+     * Convert this Failable to a new Failable, mapping the success value if present.
+     *
+     * @param converter converts the current success value to a new value
+     * @param <nS> the type of the new success value
+     * @return an update Failable with a mapped success value if present
+     */
+    public <nS> Failable<nS, F> mapSuccess(Function<S, nS> converter) {
+        final Failable<nS, F> result;
+
+        if(isSuccess()) {
+            nS convertedSuccess = converter.apply(getSuccess());
+            result = Failable.success(convertedSuccess);
+        } else {
+            result = Failable.failure(getFailure());
+        }
+
+        return result;
+    }
+
+    /**
+     * Convert this Failable to a new Failable, mapping the failure value if present.
+     *
+     * @param converter converts the current failure value to a new value
+     * @param <nF> the type of the new failure value
+     * @return an update Failable with a mapped failure value, if present
+     */
+    public <nF> Failable<S, nF> mapFailure(Function<F, nF> converter) {
+        final Failable<S, nF> result;
+
+        if(isFailure()) {
+            nF convertedFailure = converter.apply(getFailure());
+            result = Failable.failure(convertedFailure);
+        } else {
+            result = Failable.success(getSuccess());
+        }
+
+        return result;
     }
 
     /**

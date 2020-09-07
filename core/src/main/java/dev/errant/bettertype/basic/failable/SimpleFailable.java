@@ -4,6 +4,7 @@ import dev.errant.bettertype.basic.absorber.AbsorbableAction;
 import dev.errant.bettertype.basic.converter.exception.ExceptionConverter;
 
 import java.util.NoSuchElementException;
+import java.util.function.Function;
 
 /**
  * A Container type used to communicate either a success or an error value.
@@ -61,6 +62,26 @@ final public class SimpleFailable<F> {
     public static <F> SimpleFailable<F> failure(F failValue) {
         assert(failValue!=null);
         return new SimpleFailable<F>(failValue);
+    }
+
+    /**
+     * Convert this SimpleFailable to a new SimpleFailable, mapping the failure value if present.
+     *
+     * @param converter converts the current failure value to a new value
+     * @param <nF> the type of the new failure value
+     * @return an update SimpleFailable with a mapped failure value, if present
+     */
+    public <nF> SimpleFailable<nF> mapFailure(Function<F, nF> converter) {
+        final SimpleFailable<nF> result;
+
+        if(isFailure()) {
+            nF convertedFailure = converter.apply(getFailure());
+            result = SimpleFailable.failure(convertedFailure);
+        } else {
+            result = SimpleFailable.success();
+        }
+
+        return result;
     }
 
     /**
