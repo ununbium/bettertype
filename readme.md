@@ -16,7 +16,7 @@ Just include the core as follows;
 <dependency>
     <artifactId>bettertype-core</artifactId>
     <groupId>dev.errant</groupId>
-    <version>0.5.1</version>
+    <version>0.5.2</version>
 </dependency>
 ```
 
