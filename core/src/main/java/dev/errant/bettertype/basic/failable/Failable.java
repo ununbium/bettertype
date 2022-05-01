@@ -75,6 +75,23 @@ final public class Failable<S, F> {
     }
 
     /**
+     * Convert this Failable to an Optional of the SimpleFailable type.
+     *
+     * @return a SimpleFailable representing the failure case (discarding the success value)
+     */
+    public SimpleFailable<F> toSimpleFailable() {
+        final SimpleFailable<F> result;
+
+        if(isFailure()) {
+            result = SimpleFailable.failure(failValue);
+        } else {
+            result = SimpleFailable.success();
+        }
+
+        return result;
+    }
+
+    /**
      * Convert this Failable to an Optional of the Success type. If this Failable is a failure, the failureHandler is
      * first called to handle the failure.
      *

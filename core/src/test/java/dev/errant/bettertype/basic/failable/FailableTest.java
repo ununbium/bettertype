@@ -165,6 +165,32 @@ class FailableTest {
     }
 
     @Test
+    @DisplayName("convert a success Failable to a success SimpleFailable")
+    public void toSimpleFailable_success() {
+        //given
+        Failable<Object, String> successFailable = Failable.success("some success value");
+
+        //when
+        SimpleFailable<String> result = successFailable.toSimpleFailable();
+
+        //then
+        assertTrue(result.isSuccess());
+    }
+
+    @Test
+    @DisplayName("convert a success Failable to a success SimpleFailable")
+    public void toSimpleFailable_failure() {
+        //given
+        Failable<Object, String> successFailable = Failable.failure("some failure value");
+
+        //when
+        SimpleFailable<String> result = successFailable.toSimpleFailable();
+
+        //then
+        assertTrue(result.isFailure());
+    }
+
+    @Test
     @DisplayName("convert a failable to a 'present' Optional")
     public void toOptional_success() {
         //given
